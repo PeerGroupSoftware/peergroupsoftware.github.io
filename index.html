@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Peer Group Software</title>
+  <meta name="description" content="Peer Group Software — a startup project documenting what we built and what we learned." />
+
+  <!-- Font (system-first fallback) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg0: #020402;
+      --bg1: #050A06;
+      --card: rgba(102,255,121,.06);
+      --card2: rgba(102,255,121,.09);
+      --stroke: rgba(102,255,121,.16);
+      --text: rgba(233,255,238,.92);
+      --muted: rgba(210,255,220,.72);
+      --muted2: rgba(190,255,205,.58);
+      --shadow: 0 18px 60px rgba(0,0,0,.65);
+      --radius: 20px;
+      --radius2: 999px;
+      --max: 980px;
+
+      /* Logo-matched greens */
+      --accent: #66FF79;   /* sampled from your logo */
+      --accent2:#2EEB5C;
+      --accent3:#B6FFBF;
+
+      /* Background glow */
+      --glowA: rgba(102,255,121,.32);
+      --glowB: rgba(46,235,92,.22);
+      --glowC: rgba(182,255,191,.12);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 600px at 10% 8%, var(--glowA), transparent 55%),
+        radial-gradient(900px 650px at 88% 16%, var(--glowB), transparent 58%),
+        radial-gradient(900px 700px at 55% 92%, var(--glowC), transparent 58%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    a{ color:inherit; }
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      padding: 14px 0;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(7,10,18,.72), rgba(7,10,18,0));
+      z-index: 5;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 260px;
+    }
+
+    .logo{
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background:
+        radial-gradient(10px 10px at 30% 30%, rgba(255,255,255,.7), transparent 60%),
+        linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 12px 36px rgba(102,255,121,.20);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .brand h1{
+      margin:0;
+      font-size: 16px;
+      letter-spacing: .2px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .brand p{
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: var(--muted2);
+      font-weight: 500;
+    }
+
+    nav{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill{
+      text-decoration:none;
+      padding: 9px 12px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.84);
+      font-size: 13px;
+      font-weight: 600;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+    }
+    .pill:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.20);
+    }
+
+    /* Hero */
+    .hero{
+      margin-top: 16px;
+      border-radius: calc(var(--radius) + 6px);
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(900px 520px at 10% 0%, rgba(102,255,121,.20), transparent 55%),
+        radial-gradient(780px 520px at 98% 20%, rgba(46,235,92,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position: relative;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(420px 220px at 20% 12%, rgba(255,255,255,.12), transparent 65%);
+      pointer-events:none;
+      mix-blend-mode: soft-light;
+    }
+
+    .hero-inner{
+      padding: 38px 30px 30px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+      font-size: 12px;
+      color: rgba(255,255,255,.76);
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      padding: 10px 12px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      width: fit-content;
+    }
+    .dot{
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent3), var(--accent2));
+      box-shadow: 0 0 18px rgba(0,212,255,.25);
+    }
+
+    .hero h2{
+      margin: 14px 0 10px;
+      font-size: clamp(30px, 4.4vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 850;
+    }
+
+    .tagline{
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 60ch;
+    }
+
+    .btn{
+      display:inline-flex;
+      gap: 10px;
+      align-items:center;
+      padding: 11px 14px;
+      border-radius: var(--radius2);
+      text-decoration:none;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.90);
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      user-select:none;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.26);
+    }
+
+    .btn.primary{
+      border: 1px solid rgba(102,255,121,.42);
+      background: linear-gradient(135deg, rgba(102,255,121,.92), rgba(46,235,92,.55));
+      color: rgba(10,10,14,.95);
+      box-shadow: 0 16px 44px rgba(102,255,121,.16);
+    }
+    .btn.primary:hover{
+      filter: brightness(1.03);
+    }
+
+    .btn .icon{
+      width: 16px; height: 16px;
+      opacity: .95;
+    }
+
+    .statbox{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      padding: 18px;
+      display:grid;
+      gap: 12px;
+    }
+    .statrow{
+      display:flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .statrow b{
+      font-size: 13px;
+      color: rgba(255,255,255,.84);
+    }
+    .statrow span{
+      font-size: 13px;
+      color: rgba(255,255,255,.68);
+      font-weight: 600;
+    }
+
+    /* Sections */
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: 0 10px 40px rgba(0,0,0,.35);
+      padding: 22px;
+      position: relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(420px 220px at 20% 10%, rgba(255,255,255,.10), transparent 60%);
+      pointer-events:none;
+      opacity:.6;
+    }
+
+    .card h3{
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: .1px;
+      font-weight: 850;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .badge{
+      width: 26px; height: 26px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(10px 10px at 30% 30%, rgba(255,255,255,.65), transparent 60%),
+        linear-gradient(135deg, rgba(124,92,255,.55), rgba(0,212,255,.25));
+      box-shadow: 0 12px 30px rgba(0,0,0,.20);
+      flex: 0 0 auto;
+    }
+
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+      font-size: 15px;
+      position: relative;
+    }
+
+    ul.list{
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: rgba(255,255,255,.86);
+      line-height: 1.62;
+      font-size: 15px;
+      position: relative;
+    }
+    ul.list li{ margin: 8px 0; color: rgba(255,255,255,.86); }
+    ul.list li span{ color: rgba(255,255,255,.68); }
+
+    /* Footer */
+    footer{
+      margin-top: 18px;
+      text-align:center;
+      color: var(--muted2);
+      font-size: 13px;
+      padding: 18px 10px;
+    }
+    .footerline{
+      max-width: 420px;
+      margin: 0 auto 12px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+    }
+
+    /* Responsive */
+    @media (max-width: 860px){
+      .hero-inner{ grid-template-columns: 1fr; }
+      .brand{ min-width: auto; }
+      nav{ justify-content:flex-start; }
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .pill, .btn{ transition: none; }
+      .pill:hover, .btn:hover{ transform:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand" aria-label="Site branding">
+        <div class="" aria-hidden="true">
+          <img src="https://avatars.githubusercontent.com/u/33490710?s=48&v=4" alt="Peer Group Software Logo" style="border-radius: 10px;"/>
+        </div>
+        <div>
+          <h1>Peer Group Software</h1>
+          <p>Archived project page</p>
+        </div>
+      </div>
+
+      <nav aria-label="Page navigation">
+        <a class="pill" href="#story">Story</a>
+        <a class="pill" href="#features">Features</a>
+        <a class="pill" href="#takeaways">Takeaways</a>
+        <a class="pill" href="#status">Status</a>
+      </nav>
+    </div>
+
+    <section class="hero" aria-label="Hero section">
+      <div class="hero-inner">
+        <div>
+          <div class="kicker"><span class="dot" aria-hidden="true"></span>adventurous Development • Innovating for Good</div>
+          <h2>Collaboration is the only way forward.</h2>
+          <p class="tagline">
+            Peer Group Software was a startup project focused on adventurous development tasks, attempting to create games and apps of all kinds.
+          </p>
+
+          <div class="cta">
+            <a class="btn primary" href="#story" aria-label="Jump to project story">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 5v14m0 0 6-6m-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Read the story
+            </a>
+            <a class="btn" href="#takeaways" aria-label="Jump to key takeaways">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M12 12 4 7m8 5 8-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+              Key takeaways
+            </a>
+            <a class="btn" href="#features" aria-label="Jump to core features">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M8 7h12M8 12h12M8 17h12M4 7h.01M4 12h.01M4 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Core features
+            </a>
+          </div>
+        </div>
+
+        <aside class="statbox" aria-label="Project quick facts">
+          <div class="statrow">
+            <b>Status</b><span>Archived</span>
+          </div>
+          <div class="statrow">
+            <b>Focus</b><span>Game and App Development</span>
+          </div>
+          <div class="statrow">
+            <b>Built by</b><span>William Phenicie and Jake Spann</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Content sections">
+
+      <article id="story" class="card">
+        <h3><span class="badge" aria-hidden="true"></span>What it was</h3>
+        <p>
+          Peer Group Software was a startup project focused on adventurous app and game development. It started as a game development company, but due to its size, the focus shifted to making collaboration tools, a social media, a task management app, and a rideshare competitor. The only released project is YouTube-to-Mac.
+        </p>
+      </article>
+
+      <article id="features" class="card">
+        <h3><span class="badge" aria-hidden="true"></span>Core features</h3>
+        <ul class="list">
+          <li><strong>Group spaces</strong> <span>for socializing and finding likeminded individuals</span></li>
+          <li><strong>Efficient programs</strong> <span>so anyone can use the product</span></li>
+          <li><strong>Meaningful</strong> <span>and innovative projects and games</span></li>
+        </ul>
+      </article>
+
+      <article id="takeaways" class="card">
+        <h3><span class="badge" aria-hidden="true"></span>Key takeaways</h3>
+        <ul class="list">
+          <li><strong>Execution &gt; ideas</strong> <span>(every time)</span></li>
+          <li><strong>Adoption is harder</strong> <span>than building features</span></li>
+          <li><strong>Systems scale</strong> <span>— chaos doesn’t</span></li>
+        </ul>
+      </article>
+
+      <article id="status" class="card">
+        <h3><span class="badge" aria-hidden="true"></span>Status</h3>
+        <p>
+          This project is intentionally frozen in time. That’s not failure — it’s a decision to keep the
+          artifact, keep the lessons, and move forward.
+        </p>
+      </article>
+
+    </section>
+
+    <footer>
+      <div class="footerline" aria-hidden="true"></div>
+      <div>Status: archived • Built by William Phenicie and Jake Spann</div>
+    </footer>
+
+  </div>
+</body>
+</html>
